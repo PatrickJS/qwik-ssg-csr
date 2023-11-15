@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "build": "qwik build",
+    "build.mfe": "SSR_FRAGMENT=true qwik build --ssr src/entry.ssr.tsx",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build -c adapters/static/vite.config.ts",

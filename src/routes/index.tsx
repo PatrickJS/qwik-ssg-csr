@@ -39,7 +39,11 @@ export const Weather = component$(() => {
 
   return (
     <div>
-      <input name="todo" onInput$={(ev: any) => (store.id = ev.target.value)} />
+      <input
+        name="todo"
+        value={store.id}
+        onInput$={(ev: any) => (store.id = ev.target.value)}
+      />
       <Resource
         value={todoResource}
         onResolved={(data) => {

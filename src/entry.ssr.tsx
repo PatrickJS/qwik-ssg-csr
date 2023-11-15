@@ -15,10 +15,14 @@ import {
   type RenderToStreamOptions,
 } from "@builder.io/qwik/server";
 import { manifest } from "@qwik-client-manifest";
+import Fragment from "./fragment";
 import Root from "./root";
 
+const isFragment = process.env.SSR_FRAGMENT;
+const MFE = isFragment ? Fragment : Root;
+
 export default function (opts: RenderToStreamOptions) {
-  return renderToStream(<Root />, {
+  return renderToStream(<MFE />, {
     manifest,
     ...opts,
     // Use container attributes to set attributes on the html tag.
@@ -26,5 +30,13 @@ export default function (opts: RenderToStreamOptions) {
       lang: "en-us",
       ...opts.containerAttributes,
     },
+    ...(isFragment
+      ? {
+          containerTagName: "div",
+          qwikLoader: {
+            include: "never",
+          },
+        }
+      : {}),
   });
 }
