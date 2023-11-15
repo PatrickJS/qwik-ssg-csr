@@ -5,6 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(() => {
   return {
+    build: {
+      minify: false,
+      // ssr: false,
+    },
+
     plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
     preview: {
       headers: {

@@ -1,32 +1,55 @@
-import { Resource, component$, useResource$, useStore } from "@builder.io/qwik";
+import {
+  Resource,
+  component$,
+  useResource$,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 export const Weather = component$(() => {
+  const csr = useSignal(false);
   const store = useStore({
-    city: "",
+    id: 1,
   });
- 
-  const weatherResource = useResource$<any>(async ({ track, cleanup }) => {
-    const cityName = track(() => store.city);
+  useVisibleTask$(() => {
+    csr.value = true;
+  });
+
+  const todoResource = useResource$<any>(async ({ track, cleanup }) => {
+    track(csr);
+    if (!csr.value) {
+      console.log("SSG");
+      return;
+    }
+    const id = track(() => store.id);
     const abortController = new AbortController();
     cleanup(() => abortController.abort("cleanup"));
-    const res = await fetch(`http://weatherdata.com?city=${cityName}`, {
-      signal: abortController.signal,
-    });
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/todos/${id}`,
+      {
+        signal: abortController.signal,
+      }
+    );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const data = res.json();
     return data;
   });
- 
+
   return (
     <div>
-      <input
-        name="city"
-        onInput$={(ev: any) => (store.city = ev.target.value)}
-      />
+      <input name="todo" onInput$={(ev: any) => (store.id = ev.target.value)} />
       <Resource
-        value={weatherResource}
-        onResolved={(weather) => {
-          return <div>Temperature: {weather.temp}</div>;
+        value={todoResource}
+        onResolved={(data) => {
+          return <pre>{JSON.stringify(data, null, 2)}</pre>;
+        }}
+        onPending={() => {
+          return <div>Loading...</div>;
+        }}
+        onRejected={(err) => {
+          return <div>{err.message}</div>;
         }}
       />
     </div>
