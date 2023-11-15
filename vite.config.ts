@@ -6,6 +6,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig(() => {
   return {
     build: {
+      modulePreload: false,
+      // modulePreload: {
+      //   resolveDependencies: () => [],
+      // },
       minify: false,
       // ssr: false,
     },

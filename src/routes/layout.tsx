@@ -21,13 +21,13 @@ export default component$(() => {
     <>
       <ul>
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/">/</Link>
         </li>
         <li>
-          <Link href="/home">Home</Link>
+          <Link href="/home">/home</Link>
         </li>
         <li>
-          <Link href="/about">About</Link>
+          <Link href="/about">/about</Link>
         </li>
       </ul>
       <main>
