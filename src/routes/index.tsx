@@ -20,7 +20,7 @@ export const Weather = component$(() => {
   const todoResource = useResource$<any>(async ({ track, cleanup }) => {
     track(csr);
     if (!csr.value) {
-      console.log("SSG");
+      console.log("\nlog: ~~SSG~~\n");
       return;
     }
     const id = track(() => store.id);
